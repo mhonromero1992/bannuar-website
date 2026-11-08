@@ -1,0 +1,32 @@
+---
+/* San Juan faces the West Philippine Sea: the sun sets over the water. Line and light, no text. */
+const waves = Array.from({ length: 9 }, (_, i) => 330 + i * 18 + i * i * 1.6);
+---
+<svg viewBox="0 0 640 512" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ca-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#13253d" />
+      <stop offset="0.62" stop-color="#7a4b46" />
+      <stop offset="0.8" stop-color="#f2a65a" />
+    </linearGradient>
+    <radialGradient id="ca-sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff1c2" />
+      <stop offset="0.5" stop-color="#f2c230" />
+      <stop offset="1" stop-color="#f2a65a" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="ca-sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b3150" />
+      <stop offset="1" stop-color="#0b1626" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="512" fill="url(#ca-sky)" />
+  <circle cx="420" cy="318" r="120" fill="url(#ca-sun)" opacity="0.9" />
+  <rect y="316" width="640" height="196" fill="url(#ca-sea)" />
+  <line x1="0" y1="316" x2="640" y2="316" stroke="#f2c230" stroke-opacity="0.7" stroke-width="1.5" />
+  {waves.map((y, i) => (
+    <g>
+      <line x1={340 - i * 14} y1={y} x2={500 + i * 14} y2={y} stroke="#f2c230" stroke-opacity={0.55 - i * 0.05} stroke-width="2" stroke-linecap="round" />
+      <line x1={40 + i * 9} y1={y + 6} x2={160 + i * 7} y2={y + 6} stroke="#aebccf" stroke-opacity="0.18" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+  ))}
+</svg>

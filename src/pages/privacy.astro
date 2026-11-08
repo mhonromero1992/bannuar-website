@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { OFFICE, SITE } from '../data/site.js';
+const address = `${OFFICE.floor}, ${OFFICE.building}, ${OFFICE.street}, ${OFFICE.barangay}, ${OFFICE.town}, ${OFFICE.province}`;
+---
+<Base title="Privacy notice" description="How Bannuar Security Agency, Inc. uses the details you send through this website, under the Data Privacy Act of 2012." page="privacy">
+  <PageHead label="Privacy notice" title="What happens to the details you send" lede="Under the Data Privacy Act of 2012 (Republic Act No. 10173), you should know what Bannuar does with the information you give through this website." />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="prose">
+        <h2>Who is responsible</h2>
+        <p>{SITE.name}, {address}, decides how your information is used and keeps it safe.</p>
+
+        <h2>What the website collects</h2>
+        <ul>
+          <li><strong>Job applications:</strong> your name, birthday, sex, mobile number, email, city and province, schooling, licence details, work history, your message, and the file you attach.</li>
+          <li><strong>Proposal requests:</strong> your company, name, position, phone, email, the location and kind of site, the guards and hours you need, and your message.</li>
+          <li><strong>Certificate checks:</strong> the code you type. It is used for that check only and is not stored with your name.</li>
+          <li>The documents checklist on the careers page stays on your own phone. Nothing from it is sent.</li>
+        </ul>
+
+        <h2>Why</h2>
+        <ul>
+          <li>To consider you for work as a security guard and to contact you about it.</li>
+          <li>To prepare a security proposal for your company and to contact you about it.</li>
+          <li>To confirm whether a certificate of employment was issued by Bannuar.</li>
+        </ul>
+        <p>You agree to this when you tick the box on a form. Bannuar does not sell your information or use it for advertising.</p>
+
+        <h2>Who can see it</h2>
+        <p>Applications are seen by Bannuar's HR staff; proposal requests by its operations and management staff. Each person signs in to Bannuar's own system, and the database lets them see only what their role needs. Your information is stored with Bannuar's database provider, Supabase, which keeps it for Bannuar and does not use it for anything else.</p>
+
+        <h2>How long it is kept</h2>
+        <p>Applications and requests are kept while they are being handled and for as long as Bannuar needs them for the purpose above or the law requires. Ask for yours to be deleted at any time (below).</p>
+
+        <h2>Your rights</h2>
+        <p>You may ask to see the information Bannuar holds about you, to correct it, or to have it deleted, and you may withdraw your consent. Write to Bannuar's Data Protection Officer at the office address above. If you think your information was mishandled, you may complain to the National Privacy Commission.</p>
+      </div>
+    </div>
+  </section>
+</Base>

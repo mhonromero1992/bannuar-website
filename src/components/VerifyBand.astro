@@ -1,0 +1,18 @@
+---
+import CodeForm from './CodeForm.astro';
+import Specimen from './Specimen.astro';
+---
+<section class="section section--night on-night" id="verify" aria-labelledby="verify-title">
+  <div class="wrap verify__grid">
+    <div class="verify__text">
+      <p class="label muted">For banks, embassies and employers</p>
+      <h2 class="h2" id="verify-title">Check a Bannuar certificate of employment</h2>
+      <p>
+        Each certificate of employment Bannuar's HR office issues carries a code at the foot of the page.
+        Type it here to see whether the certificate is genuine and still valid.
+      </p>
+      <CodeForm id="home-verify" />
+    </div>
+    <Specimen />
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import PhotoSlot from './PhotoSlot.astro';
+import OfficeArt from './OfficeArt.astro';
+import { OFFICE } from '../data/site.js';
+interface Props { secondary?: { href: string; label: string } }
+const { secondary = { href: '/about/', label: 'About Bannuar' } } = Astro.props;
+---
+<section class="section" id="office" aria-labelledby="office-title">
+  <div class="wrap office__grid">
+    <div>
+      <p class="label muted">The office</p>
+      <h2 class="office__street" id="office-title">{OFFICE.street}</h2>
+      <p class="office__place">{OFFICE.barangay}, {OFFICE.town}, {OFFICE.province}</p>
+      <p class="office__floor">{OFFICE.floor}, {OFFICE.building}</p>
+      <div class="office__actions">
+        <a class="btn btn--line" href={OFFICE.mapsUrl} rel="noopener">Get directions</a>
+        <a class="link" href={secondary.href}>{secondary.label}</a>
+      </div>
+    </div>
+    <PhotoSlot name="office" alt="Bannuar's office on Diversion Road, San Juan, La Union">
+      <OfficeArt />
+    </PhotoSlot>
+  </div>
+</section>

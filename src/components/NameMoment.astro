@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import badge from '../assets/brand/bannuar-badge.png';
+import { GROUP } from '../data/site.js';
+---
+<section class="name section" aria-labelledby="name-title">
+  <div class="wrap name__wrap">
+    <p class="label muted">The name</p>
+    <h2 class="name__word" id="name-title">Bannuar<span class="dot">.</span></h2>
+    <div class="name__grid">
+      <p class="name__means" data-highlight>
+        In Ilocano, <b data-key>bannuar</b> means <b data-key>hero</b>. The agency carries the word on its badge,
+        around a guard standing under the Philippine sun and three stars.
+      </p>
+      <div class="name__aside">
+        <div class="name__badge">
+          <Image src={badge} alt="The Bannuar badge" width={96} height={96} densities={[1, 2]} />
+          <p>One of four agencies in the group, each with an Ilocano name.</p>
+        </div>
+        <p class="group-line" aria-label={`The group: ${GROUP.agencies.join(', ')}`}>
+          {GROUP.agencies.map((a) => <span>{a}</span>)}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/moments.js';
+</script>

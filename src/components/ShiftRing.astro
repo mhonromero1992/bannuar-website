@@ -1,0 +1,74 @@
+---
+import { COVERAGE } from '../data/site.js';
+
+const C = 260;
+const R = 182;
+const angle = (h: number) => (h / 24) * Math.PI * 2 - Math.PI / 2;
+const at = (h: number, r = R) => [C + Math.cos(angle(h)) * r, C + Math.sin(angle(h)) * r].map((n) => n.toFixed(2));
+function arc(from: number, to: number) {
+  if (to - from >= 24) {
+    const [ax, ay] = at(0);
+    const [bx, by] = at(12);
+    return `M ${ax} ${ay} A ${R} ${R} 0 1 1 ${bx} ${by} A ${R} ${R} 0 1 1 ${ax} ${ay}`;
+  }
+  const [ax, ay] = at(from);
+  const [bx, by] = at(to);
+  return `M ${ax} ${ay} A ${R} ${R} 0 ${to - from > 12 ? 1 : 0} 1 ${bx} ${by}`;
+}
+const ticks = Array.from({ length: 24 }, (_, h) => {
+  const major = h % 6 === 0;
+  const [x1, y1] = at(h, R + (major ? 16 : 20));
+  const [x2, y2] = at(h, R + 30);
+  return { x1, y1, x2, y2, major };
+});
+const labels = [
+  { h: 0, text: 'MIDNIGHT' },
+  { h: 6, text: '6 AM' },
+  { h: 12, text: 'NOON' },
+  { h: 18, text: '6 PM' },
+].map((l) => ({ ...l, xy: at(l.h, R + 54) }));
+const stars = [[200, 150], [242, 118], [300, 140], [330, 176], [176, 196], [262, 186], [352, 222], [214, 230]];
+const [nowX, nowY] = at(20);
+
+interface Props { initial?: string }
+const { initial = '24h' } = Astro.props;
+const first = COVERAGE.find((c) => c.value === initial) ?? COVERAGE[2];
+---
+<figure class="ring" data-ring data-radius={R} data-centre={C}>
+  <svg viewBox="0 0 520 520" role="img" aria-labelledby="ring-title">
+    <title id="ring-title">A 24-hour dial with the chosen coverage drawn in gold</title>
+    <defs>
+      <linearGradient id="ring-sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1b3150" />
+        <stop offset="0.5" stop-color="#13253d" />
+        <stop offset="0.5" stop-color="#2a2d3a" />
+        <stop offset="1" stop-color="#4b3a33" />
+      </linearGradient>
+      <radialGradient id="ring-sun" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#ffe08a" />
+        <stop offset="0.45" stop-color="#f2c230" />
+        <stop offset="1" stop-color="#f2a65a" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <circle cx={C} cy={C} r={R - 24} fill="url(#ring-sky)" opacity="0.9" />
+    {stars.map(([x, y], i) => <circle cx={x} cy={y} r={i % 3 === 0 ? 1.8 : 1.2} fill="#eef2f7" opacity="0.65" />)}
+    <circle cx={C} cy={C + 92} r="40" fill="url(#ring-sun)" opacity="0.55" />
+    <line x1={C - R + 24} y1={C} x2={C + R - 24} y2={C} stroke="rgba(242,194,48,.45)" stroke-width="1" />
+    <circle class="ring__track" cx={C} cy={C} r={R} />
+    {COVERAGE.map((c) => (
+      <path class="ring__arc" data-arc={c.value} d={arc(c.from, c.to)} pathLength="1" stroke-dasharray="1 1" style={`stroke-dashoffset:${c.value === first.value ? 0 : 1}`} />
+    ))}
+    {ticks.map((t) => <line class:list={['ring__tick', { 'ring__tick--major': t.major }]} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />)}
+    {labels.map((l) => <text class="ring__num" x={l.xy[0]} y={l.xy[1]}>{l.text}</text>)}
+    <line class="ring__hand" data-ring-hand x1={C} y1={C} x2={nowX} y2={nowY} />
+    <circle cx={C} cy={C} r="4" fill="#eef2f7" />
+    <circle class="ring__now" data-ring-now cx={nowX} cy={nowY} r="7" />
+    <text class="ring__center-label" x={C} y={C - 26} data-ring-label>{first.label}</text>
+    <text class="ring__center-sub" x={C} y={C - 2}>Coverage</text>
+  </svg>
+  <p class="muted" data-ring-time style="text-align:center;margin-top:10px;font-size:.92rem" aria-hidden="true"></p>
+</figure>
+
+<script>
+  import '../scripts/ring.js';
+</script>

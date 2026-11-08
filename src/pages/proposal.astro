@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProposalForm from '../components/ProposalForm.astro';
+import ShiftRing from '../components/ShiftRing.astro';
+import { OFFICE } from '../data/site.js';
+---
+<Base title="Request a security proposal" description="Tell Bannuar Security Agency, Inc. about the post: where it is, how many guards and which hours. The office calls you back with a proposal." page="proposal">
+  <PageHead
+    label="For companies"
+    title="Request a security proposal"
+    lede="Tell Bannuar about the post: where it is, how many guards and which hours they cover. The office calls you back to go through it and sends a proposal."
+  />
+
+  <section class="section" aria-label="The request">
+    <div class="wrap form-shell" data-ring-scope>
+      <aside class="form-shell__aside" aria-label="How a request goes">
+        <div class="section--night on-night" style="border-radius:var(--r-panel);padding:clamp(18px,3vw,30px)">
+          <ShiftRing initial="24h" />
+          <p class="watch__hours" data-ring-hours aria-live="polite" style="text-align:center;margin:6px 0 0">Every hour, every day</p>
+        </div>
+        <ol class="steps">
+          <li><b>You send this request</b><span>It goes straight into Bannuar's own system, not to a mailbox.</span></li>
+          <li><b>The office calls you</b><span>On the number you give, to go through the post and the hours.</span></li>
+          <li><b>You receive a proposal</b><span>For the guards and coverage the post needs.</span></li>
+        </ol>
+        <p class="muted" style="font-size:var(--fs-small)">Office: {OFFICE.floor}, {OFFICE.building}, {OFFICE.street}, {OFFICE.barangay}, {OFFICE.town}, {OFFICE.province}.</p>
+      </aside>
+      <ProposalForm />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,29 @@
+---
+import ShiftRing from './ShiftRing.astro';
+import { COVERAGE } from '../data/site.js';
+const choices = COVERAGE.filter((c) => c.value !== 'event');
+---
+<section class="section section--night on-night" id="companies" aria-labelledby="companies-title" data-ring-scope>
+  <div class="wrap watch__grid">
+    <div class="watch__text">
+      <p class="label muted">For companies</p>
+      <h2 class="h2" id="companies-title">Guards for your gate, your lobby and your night shift</h2>
+      <p class="lede">
+        Tell Bannuar where the post is, how many guards you need and which hours they cover. The office
+        calls you back to go through the post and send a proposal.
+      </p>
+      <fieldset class="seg">
+        <legend>Hours to cover</legend>
+        {choices.map((c) => (
+          <label>
+            <input type="radio" name="coverage-preview" value={c.value} data-ring-input data-label={c.label} data-hours={c.hours} checked={c.value === '24h'} />
+            <span>{c.label}</span>
+          </label>
+        ))}
+      </fieldset>
+      <p class="watch__hours" data-ring-hours aria-live="polite">Every hour, every day</p>
+      <a class="btn" href="/proposal/?coverage=24h" data-ring-cta>Request a security proposal</a>
+    </div>
+    <ShiftRing />
+  </div>
+</section>

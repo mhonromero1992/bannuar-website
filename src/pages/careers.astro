@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Checklist from '../components/Checklist.astro';
+import ApplicationForm from '../components/ApplicationForm.astro';
+import badge from '../assets/brand/bannuar-badge.png';
+---
+<Base title="Careers: apply as a security guard" description="Apply as a security guard or lady guard at Bannuar Security Agency, Inc., San Juan, La Union. See the open posts and send your application from your phone." page="careers">
+  <PageHead
+    label="Careers"
+    title="Wear the Bannuar badge"
+    lede="Bannuar hires security guards and lady guards for the posts it covers. See the open posts, gather your documents, and send your application from your phone."
+  >
+    <Fragment slot="actions">
+      <div class="hero__actions" style="margin-top:8px">
+        <a class="btn" href="#apply">Apply as a guard</a>
+        <a class="btn btn--line" href="#openings">See the open posts</a>
+      </div>
+    </Fragment>
+    <Image class="pagehead__badge" src={badge} alt="The Bannuar badge" width={360} height={360} densities={[1, 2]} loading="eager" />
+  </PageHead>
+
+  <section class="section" id="openings" aria-labelledby="openings-title">
+    <div class="wrap careers__grid">
+      <div>
+        <p class="label muted">Open posts</p>
+        <h2 class="h2" id="openings-title" style="margin:14px 0 26px">Where Bannuar is hiring</h2>
+        <div class="openings" data-openings>
+          <p class="openings__state" data-state="loading">Loading the open posts…</p>
+          <p class="openings__state" data-state="empty" hidden>No openings are posted right now. Send a general application below: HR keeps it on file for the next opening.</p>
+          <p class="openings__state" data-state="error" hidden>The open posts could not load. You can still apply below.</p>
+          <p class="openings__state" data-state="offline" hidden>The list of open posts appears here once Bannuar posts them online. You can still prepare your documents and send a general application.</p>
+          <ol class="openings" data-openings-list style="list-style:none"></ol>
+        </div>
+      </div>
+      <Checklist id="careers-docs" />
+    </div>
+  </section>
+
+  <section class="section section--paper-2" aria-label="Application">
+    <div class="wrap">
+      <ApplicationForm />
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/openings.js';
+  </script>
+</Base>

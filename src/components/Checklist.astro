@@ -1,0 +1,28 @@
+---
+import { DOCUMENTS_TO_PREPARE } from '../data/site.js';
+interface Props { id?: string }
+const { id = 'docs' } = Astro.props;
+---
+<div class="checklist" data-checklist>
+  <h3 id={`${id}-title`}>Documents to prepare</h3>
+  <p class="checklist__intro">Tick them off as you gather them. The ticks stay on this phone only.</p>
+  <ul aria-labelledby={`${id}-title`}>
+    {DOCUMENTS_TO_PREPARE.map((d) => (
+      <li>
+        <label>
+          <input type="checkbox" value={d.id} />
+          <span class="checklist__box" aria-hidden="true"></span>
+          <span class="checklist__text">{d.label}</span>
+        </label>
+      </li>
+    ))}
+  </ul>
+  <div class="checklist__foot">
+    <p class="checklist__count" data-checklist-count aria-live="polite">0 of {DOCUMENTS_TO_PREPARE.length} ready</p>
+    <button class="checklist__reset" type="button" data-checklist-reset hidden>Clear the ticks</button>
+  </div>
+</div>
+
+<script>
+  import '../scripts/checklist.js';
+</script>

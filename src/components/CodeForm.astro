@@ -1,0 +1,30 @@
+---
+interface Props { id: string; autocheck?: boolean }
+const { id, autocheck = false } = Astro.props;
+---
+<form class="code-form on-night" data-verify={`${id}-result`} data-autocheck={autocheck ? '' : undefined} novalidate>
+  <label for={`${id}-code`}>Certificate code</label>
+  <div class="code-form__row">
+    <input
+      class="code-input"
+      id={`${id}-code`}
+      name="code"
+      type="text"
+      inputmode="text"
+      autocomplete="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      maxlength="20"
+      placeholder="K7QM-3XPD-8RTA"
+      aria-describedby={`${id}-hint ${id}-error`}
+    />
+    <button class="btn" type="submit">Check the certificate</button>
+  </div>
+  <p class="field__error" id={`${id}-error`} aria-live="polite"></p>
+  <p class="code-form__hint" id={`${id}-hint`}>Twelve letters and numbers, printed at the foot of the certificate.</p>
+</form>
+<div class="verdict" id={`${id}-result`} role="status" aria-live="polite" hidden></div>
+
+<script>
+  import '../scripts/verify.js';
+</script>

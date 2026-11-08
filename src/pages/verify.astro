@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import CodeForm from '../components/CodeForm.astro';
+import Specimen from '../components/Specimen.astro';
+---
+<Base title="Check a certificate of employment" description="Check whether a certificate of employment from Bannuar Security Agency, Inc. is genuine, using the code printed at the foot of the certificate." page="verify">
+  <section class="pagehead on-night" aria-labelledby="page-title">
+    <div class="pagehead__sky" aria-hidden="true"></div>
+    <div class="wrap verify__grid" style="position:relative">
+      <div class="verify__text">
+        <p class="pagehead__label"><span class="beacon" aria-hidden="true"></span><span class="label">For banks, embassies and employers</span></p>
+        <h1 id="page-title" style="margin:18px 0 20px">Check a Bannuar certificate of employment</h1>
+        <p class="lede" style="color:var(--pale)">
+          Type the code printed at the foot of the certificate. You will see whether Bannuar issued it, whether it is
+          still valid, and the details it should show.
+        </p>
+        <CodeForm id="page-verify" autocheck />
+      </div>
+      <Specimen />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-title">
+    <div class="wrap split" style="align-items:start">
+      <div>
+        <p class="label muted">How it works</p>
+        <h2 class="h2" id="how-title" style="margin:14px 0 22px">What the check tells you</h2>
+      </div>
+      <div class="prose">
+        <p>Each certificate of employment Bannuar's HR office issues gets its own code of twelve letters and numbers. The check shows the certificate number, the employee's name, the position and the employment dates on record, so you can compare them with the paper in front of you.</p>
+        <p>A certificate Bannuar withdraws, for example one issued with a mistake, shows as withdrawn. A code that does not exist means the paper did not come from Bannuar's system.</p>
+        <p>The check shows nothing else about the employee. Salary appears only on the paper certificate, and only when the employee asked for it.</p>
+      </div>
+    </div>
+  </section>
+</Base>

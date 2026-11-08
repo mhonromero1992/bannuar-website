@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import badge from '../assets/brand/bannuar-badge.png';
+---
+<figure class="specimen" aria-label="A specimen certificate showing the code at the foot of the page">
+  <div class="specimen__paper" aria-hidden="true">
+    <div class="specimen__top">
+      <Image src={badge} alt="" width={64} height={64} densities={[1, 2]} />
+      <p class="specimen__org">Bannuar Security Agency, Inc.<small>San Juan, La Union</small></p>
+    </div>
+    <p class="specimen__title">CERTIFICATE OF EMPLOYMENT</p>
+    <div class="specimen__lines">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="specimen__sign">
+      <p class="specimen__signature">Human Resources</p>
+      <p class="specimen__code"><span>Verification code</span><b>K7QM-3XPD-8RTA</b></p>
+    </div>
+    <span class="specimen__stamp">SPECIMEN</span>
+  </div>
+</figure>

@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import CoastArt from '../components/CoastArt.astro';
+import BloodDrive from '../components/BloodDrive.astro';
+import OfficeBlock from '../components/OfficeBlock.astro';
+import badge from '../assets/brand/bannuar-badge.png';
+import { ALL_SOURCES, GROUP, GUARDS, LEADER, NAME, OFFICE } from '../data/site.js';
+---
+<Base title="About Bannuar" description="Bannuar Security Agency, Inc. of San Juan, La Union: the name, the group of four agencies, its leadership and its office on Diversion Road." page="about">
+  <PageHead
+    label="About Bannuar"
+    title="A security agency from San Juan, La Union"
+    lede={`Bannuar Security Agency, Inc. has its office on ${OFFICE.street} in ${OFFICE.barangay}, ${OFFICE.town}, and ${GUARDS.label.toLowerCase()} security guards.`}
+  >
+    <Image class="pagehead__badge" src={badge} alt="The Bannuar badge: a guard under the Philippine sun and three stars, within a laurel" width={360} height={360} densities={[1, 2]} loading="eager" />
+  </PageHead>
+
+  <section class="section" aria-labelledby="group-title">
+    <div class="wrap split" style="align-items:start">
+      <div>
+        <p class="label muted">The group</p>
+        <h2 class="h2" id="group-title" style="margin:14px 0 22px">Four agencies with Ilocano names</h2>
+        <p class="lede muted">
+          In {NAME.language}, <b style="color:var(--ink)">{NAME.word}</b> means {NAME.means}. Bannuar Security Agency, Inc.
+          brings together four agencies.
+        </p>
+      </div>
+      <ol class="agencies">
+        {GROUP.agencies.map((a, i) => (
+          <li><b>{a}</b><span>{i === 0 ? 'Bannuar Security Agency' : `${a} Security Agency`}</span></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--night on-night" aria-labelledby="home-title">
+    <div class="wrap split">
+      <div>
+        <p class="label muted">Hometown and leadership</p>
+        <h2 class="h2" id="home-title" style="margin:14px 0 22px">From {OFFICE.town}, {OFFICE.province}</h2>
+        <p class="muted" style="max-width:44ch;margin-bottom:26px">
+          {OFFICE.town} is a coastal town of {OFFICE.province}, facing the West Philippine Sea. Bannuar's office is on
+          {OFFICE.street} in Barangay {OFFICE.barangay}.
+        </p>
+        <p class="leader">
+          Bannuar is led by <b>{LEADER.name}</b>, its {LEADER.title.toLowerCase()}.
+        </p>
+      </div>
+      <PhotoSlot name="hometown" alt="The coast of San Juan, La Union">
+        <CoastArt />
+      </PhotoSlot>
+    </div>
+  </section>
+
+  <BloodDrive />
+  <OfficeBlock secondary={{ href: '/proposal/', label: 'Request a security proposal' }} />
+
+  <section class="section section--paper-2" aria-labelledby="sources-title">
+    <div class="wrap">
+      <h2 class="label muted" id="sources-title">Where these facts come from</h2>
+      <ul class="sources">
+        {ALL_SOURCES.map((s) => <li>{s.url ? <a href={s.url} rel="noopener">{s.label}</a> : s.label}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

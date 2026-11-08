@@ -1,0 +1,21 @@
+---
+/**
+ * A place for one of Bannuar's own photographs (src/assets/photos/<name>.jpg). Until the file
+ * exists the slot shows its drawing (the default slot), which is finished artwork, not a grey box.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props { name: string; alt: string; sizes?: string; class?: string }
+const { name, alt, sizes = '(min-width: 980px) 560px, 100vw', class: cls } = Astro.props;
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+const key = Object.keys(photos).find((k) => k.split('/').pop()?.replace(/\.[^.]+$/, '') === name);
+const image = key ? photos[key].default : null;
+---
+<figure class:list={['slot', `slot--${name}`, cls]}>
+  {image ? (
+    <Picture src={image} alt={alt} widths={[480, 800, 1200]} sizes={sizes} formats={['avif', 'webp']} loading="lazy" />
+  ) : (
+    <div class="slot__art"><slot /></div>
+  )}
+</figure>

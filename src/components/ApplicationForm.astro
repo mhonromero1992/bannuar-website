@@ -1,0 +1,155 @@
+---
+import { EDUCATION } from '../data/site.js';
+const today = new Date().toISOString().slice(0, 10);
+---
+<div class="form-panel" id="apply">
+  <h2 class="h2" style="font-size:clamp(1.8rem,1.3rem + 2vw,2.8rem);margin-bottom:8px">Apply as a guard</h2>
+  <p class="muted" style="margin-bottom:26px">About five minutes. Fields marked optional can wait for your interview.</p>
+  <form class="form" data-form="application" data-done="application-done" data-offline="Online applications are not connected yet. Please bring your documents to the office on Diversion Road, San Juan, La Union." novalidate>
+    <fieldset class="form__group">
+      <legend class="form__group-title">The post</legend>
+      <div class="field">
+        <label for="a-opening">Which opening?</label>
+        <select class="select" id="a-opening" name="job_opening_id">
+          <option value="">Any post (general application)</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="form__group">
+      <legend class="form__group-title">About you</legend>
+      <div class="field-row field-row--3">
+        <div class="field" data-required="Enter your first name.">
+          <label for="a-first">First name</label>
+          <input class="input" id="a-first" name="first_name" type="text" autocomplete="given-name" aria-describedby="a-first-err" />
+          <p class="field__error" id="a-first-err"></p>
+        </div>
+        <div class="field">
+          <label for="a-middle">Middle name <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-middle" name="middle_name" type="text" autocomplete="additional-name" />
+        </div>
+        <div class="field" data-required="Enter your last name.">
+          <label for="a-last">Last name</label>
+          <input class="input" id="a-last" name="last_name" type="text" autocomplete="family-name" aria-describedby="a-last-err" />
+          <p class="field__error" id="a-last-err"></p>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="a-birth">Birthday <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-birth" name="birthdate" type="date" max={today} data-not-future autocomplete="bday" aria-describedby="a-birth-err" />
+          <p class="field__error" id="a-birth-err"></p>
+        </div>
+        <fieldset class="choice">
+          <legend>Sex <span class="field__opt">(optional)</span></legend>
+          <div class="choice__items">
+            <label class="choice__item"><input type="radio" name="sex" value="male" /><span>Male</span></label>
+            <label class="choice__item"><input type="radio" name="sex" value="female" /><span>Female</span></label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="field-row">
+        <div class="field" data-required="Enter your mobile number.">
+          <label for="a-mobile">Mobile number</label>
+          <input class="input" id="a-mobile" name="mobile_no" type="tel" inputmode="tel" autocomplete="tel" placeholder="0917 123 4567" data-mobile aria-describedby="a-mobile-err" />
+          <p class="field__error" id="a-mobile-err"></p>
+        </div>
+        <div class="field">
+          <label for="a-email">Email <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-email" name="email" type="email" autocomplete="email" aria-describedby="a-email-err" />
+          <p class="field__error" id="a-email-err"></p>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field" data-required="Enter your city or municipality.">
+          <label for="a-city">City or municipality</label>
+          <input class="input" id="a-city" name="city" type="text" autocomplete="address-level2" aria-describedby="a-city-err" />
+          <p class="field__error" id="a-city-err"></p>
+        </div>
+        <div class="field">
+          <label for="a-province">Province <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-province" name="province" type="text" autocomplete="address-level1" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-education">Highest schooling <span class="field__opt">(optional)</span></label>
+        <select class="select" id="a-education" name="education">
+          <option value="">Choose one</option>
+          {EDUCATION.map((e) => <option value={e.value}>{e.label}</option>)}
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="form__group">
+      <legend class="form__group-title">Your work as a guard</legend>
+      <fieldset class="choice" data-required="Tell HR whether you have a security guard license.">
+        <legend>Do you have a security guard license (LESP)?</legend>
+        <div class="choice__items">
+          <label class="choice__item"><input type="radio" name="has_license" value="yes" aria-describedby="a-license-err" /><span>Yes</span></label>
+          <label class="choice__item"><input type="radio" name="has_license" value="no" aria-describedby="a-license-err" /><span>Not yet</span></label>
+        </div>
+        <p class="field__error" id="a-license-err"></p>
+      </fieldset>
+      <div class="field-row" data-license-fields hidden>
+        <div class="field">
+          <label for="a-lic-no">License number <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-lic-no" name="license_no" type="text" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="a-lic-exp">Valid until <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-lic-exp" name="license_expires_on" type="date" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="a-years">Years as a guard <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-years" name="years_experience" type="number" inputmode="decimal" min="0" max="60" step="0.5" data-range-message="Enter years from 0 to 60." aria-describedby="a-years-err" />
+          <p class="field__error" id="a-years-err"></p>
+        </div>
+        <div class="field">
+          <label for="a-prev">Last agency <span class="field__opt">(optional)</span></label>
+          <input class="input" id="a-prev" name="previous_agency" type="text" autocomplete="off" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-pref">Where would you like to be posted? <span class="field__opt">(optional)</span></label>
+        <input class="input" id="a-pref" name="preferred_location" type="text" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="a-file">Resume or bio-data <span class="field__opt">(optional · PDF, JPG or PNG, up to 5 MB)</span></label>
+        <input class="file-input" id="a-file" name="resume" type="file" accept="application/pdf,image/jpeg,image/png" aria-describedby="a-file-err" />
+        <p class="field__error" id="a-file-err"></p>
+      </div>
+      <div class="field">
+        <label for="a-message">Message to HR <span class="field__opt">(optional)</span></label>
+        <textarea class="textarea" id="a-message" name="message" rows="3" maxlength="2000"></textarea>
+      </div>
+    </fieldset>
+
+    <div class="field consent-field" data-required="Tick the box so Bannuar may use your application.">
+      <label class="consent">
+        <input type="checkbox" name="privacy_consent" aria-describedby="a-consent-err" />
+        <span>Bannuar may use these details and my file to consider me for work as a guard and to contact me about it. <a href="/privacy/">Privacy notice</a></span>
+      </label>
+      <p class="field__error" id="a-consent-err"></p>
+    </div>
+    <div class="form__honey" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <div class="form__foot">
+      <button class="btn" type="submit">Send my application</button>
+      <p class="form__status" data-status role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <div class="done" id="application-done" tabindex="-1" hidden>
+    <span class="beacon" aria-hidden="true"></span>
+    <h2>Application received</h2>
+    <p>Bannuar's HR office has your application, sent <span class="done__ref" data-sent-at></span>. Keep your phone on: HR calls the mobile number you gave.</p>
+    <div><button class="btn btn--line" type="button" data-send-another>Send another application</button></div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/forms.js';
+</script>

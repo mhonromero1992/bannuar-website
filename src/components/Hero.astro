@@ -1,0 +1,55 @@
+---
+import { GUARDS, NAME, OFFICE } from '../data/site.js';
+---
+<section class="hero on-night" data-hero aria-labelledby="hero-title">
+  <div class="hero__scene" data-hero-scene>
+    <picture>
+      <source media="(max-aspect-ratio: 9/10)" srcset="/images/hero-poster-portrait.webp" type="image/webp" />
+      <source srcset="/images/hero-poster-landscape.webp" type="image/webp" />
+      <img class="hero__poster" src="/images/hero-poster-landscape.jpg" width="1600" height="1000" alt="" fetchpriority="high" decoding="async" />
+    </picture>
+  </div>
+  <div class="hero__shade" aria-hidden="true"></div>
+
+  <div class="wrap hero__wrap">
+    <p class="hero__label" data-enter style="--i: 0">
+      <span class="beacon" aria-hidden="true"></span>
+      <span class="label">Bannuar Security Agency, Inc.</span>
+      <span>{OFFICE.town}, {OFFICE.province}</span>
+    </p>
+    <h1 class="hero__title" id="hero-title" data-enter>
+      <span class="line" style="--l: 0"><span>Security guards</span></span>
+      <span class="line" style="--l: 1"><span>on watch until</span></span>
+      <span class="line" style="--l: 2"><span>the <em>sun</em> comes up.</span></span>
+    </h1>
+    <p class="hero__lede" data-enter style="--i: 4">
+      Bannuar posts security guards at companies, offices and sites from its office on
+      <strong>{OFFICE.street}, {OFFICE.town}, {OFFICE.province}</strong>.
+    </p>
+    <div class="hero__actions" data-enter style="--i: 5">
+      <a class="btn" href="/proposal/">Request a security proposal</a>
+      <a class="btn btn--line" href="/careers/#apply">Apply as a guard</a>
+    </div>
+    <dl class="hero__facts" data-enter style="--i: 6">
+      <div><dt class="label">Guards</dt><dd class="tabular">{GUARDS.label}</dd></div>
+      <div><dt class="label">Office</dt><dd>{OFFICE.town}, {OFFICE.province}</dd></div>
+      <div><dt class="label">Bannuar</dt><dd>{NAME.language} for {NAME.means}</dd></div>
+    </dl>
+  </div>
+
+  <div class="hero__controls">
+    <p class="hero__shift" data-hero-shift aria-hidden="true">
+      <span class="label">Night shift</span>
+      <span class="hero__shift-bar"><span></span></span>
+      <span class="label">Sunrise</span>
+    </p>
+    <button class="hero__pause" type="button" aria-pressed="false" data-hero-pause hidden>
+      <span class="hero__pause-icon" aria-hidden="true"></span>
+      <span data-label>Pause the night scene</span>
+    </button>
+  </div>
+</section>
+
+<script>
+  import '../scripts/hero.js';
+</script>

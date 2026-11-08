@@ -1,0 +1,63 @@
+---
+import '@fontsource-variable/archivo/standard.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/components.css';
+import fontLatin from '@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2?url';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Dock from '../components/Dock.astro';
+import { SITE, SUPABASE } from '../data/site.js';
+
+interface Props {
+  title: string;
+  description?: string;
+  page?: 'home' | 'about' | 'careers' | 'proposal' | 'verify' | 'privacy' | 'lost';
+  image?: string;
+  dock?: boolean;
+}
+const { title, description = SITE.description, page = 'home', image = '/og.jpg', dock = true } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(image, SITE.url).href;
+const fullTitle = page === 'home' ? title : `${title} · ${SITE.short}`;
+---
+<!doctype html>
+<html lang="en" data-page={page} data-sb-url={SUPABASE.url} data-sb-key={SUPABASE.key}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0b1626" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={fontLatin} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_PH" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav page={page} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    {dock && <Dock />}
+    <script>
+      import '../scripts/site.js';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+---
+import { BLOOD_DRIVE, GROUP } from '../data/site.js';
+interface Props { headingLevel?: 'h2' | 'h3' }
+const { headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const partners = GROUP.agencies.slice(1);
+---
+<section class="section section--paper-2" id="community" aria-labelledby="community-title">
+  <div class="wrap drive__grid">
+    <div class="drive__text">
+      <div class="drive__figure">
+        <span class="drive__num tabular">{BLOOD_DRIVE.units}</span>
+        <span class="drive__unit">units of<br />blood</span>
+      </div>
+      <p class="label muted">Community</p>
+      <H class="h2" id="community-title">A blood drive at the office in Panicsican</H>
+      <p>
+        On {BLOOD_DRIVE.dateLabel}, Bannuar's office in Barangay Panicsican hosted a mobile blood drive with
+        {BLOOD_DRIVE.hospital}. It collected {BLOOD_DRIVE.units} units of blood.
+      </p>
+      <p>
+        Bannuar and its partner agencies, {partners.slice(0, -1).join(', ')} and {partners.at(-1)}, give blood with
+        the hospital {BLOOD_DRIVE.cadence}.
+      </p>
+      <a class="link drive__source" href={BLOOD_DRIVE.source.url} rel="noopener">Read the provincial government's report</a>
+    </div>
+    <div class="drops" data-drops aria-hidden="true">
+      <svg width="0" height="0" style="position:absolute">
+        <symbol id="drop" viewBox="0 0 24 32"><path d="M12 1.5C12 1.5 3.2 13 3.2 20.2a8.8 8.8 0 0 0 17.6 0C20.8 13 12 1.5 12 1.5Z" /></symbol>
+      </svg>
+      {Array.from({ length: BLOOD_DRIVE.units }, (_, i) => (
+        <span class="drop" style={`--d:${i}`}><svg><use href="#drop" /></svg></span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/moments.js';
+</script>

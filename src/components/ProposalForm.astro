@@ -1,0 +1,107 @@
+---
+import { COVERAGE, SITE_TYPES } from '../data/site.js';
+const today = new Date().toISOString().slice(0, 10);
+---
+<div class="form-panel" id="request">
+  <form class="form" data-form="proposal" data-done="proposal-done" data-offline="Online sending is not connected yet. Please visit the office on Diversion Road, San Juan, La Union." novalidate>
+    <fieldset class="form__group">
+      <legend class="form__group-title">About you</legend>
+      <div class="field" data-required="Enter the company or organization.">
+        <label for="p-company">Company or organization</label>
+        <input class="input" id="p-company" name="company" type="text" autocomplete="organization" aria-describedby="p-company-err" />
+        <p class="field__error" id="p-company-err"></p>
+      </div>
+      <div class="field-row">
+        <div class="field" data-required="Enter your name.">
+          <label for="p-name">Your name</label>
+          <input class="input" id="p-name" name="contact_name" type="text" autocomplete="name" aria-describedby="p-name-err" />
+          <p class="field__error" id="p-name-err"></p>
+        </div>
+        <div class="field">
+          <label for="p-position">Your position <span class="field__opt">(optional)</span></label>
+          <input class="input" id="p-position" name="position" type="text" autocomplete="organization-title" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field" data-required="Enter a number the office can call.">
+          <label for="p-phone">Mobile or landline</label>
+          <input class="input" id="p-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-phone aria-describedby="p-phone-err" />
+          <p class="field__error" id="p-phone-err"></p>
+        </div>
+        <div class="field">
+          <label for="p-email">Email <span class="field__opt">(optional)</span></label>
+          <input class="input" id="p-email" name="email" type="email" autocomplete="email" aria-describedby="p-email-err" />
+          <p class="field__error" id="p-email-err"></p>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="form__group">
+      <legend class="form__group-title">About the post</legend>
+      <div class="field">
+        <label for="p-address">Where is it? <span class="field__opt">(town or city, optional)</span></label>
+        <input class="input" id="p-address" name="site_address" type="text" autocomplete="address-level2" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="p-type">Kind of site <span class="field__opt">(optional)</span></label>
+          <select class="select" id="p-type" name="site_type">
+            <option value="">Choose one</option>
+            {SITE_TYPES.map((t) => <option value={t.value}>{t.label}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="p-guards">Guards needed <span class="field__opt">(optional)</span></label>
+          <input class="input" id="p-guards" name="guards_needed" type="number" inputmode="numeric" min="1" max="5000" step="1" data-range-message="Enter a number from 1 to 5,000." aria-describedby="p-guards-err" />
+          <p class="field__error" id="p-guards-err"></p>
+        </div>
+      </div>
+      <fieldset class="choice">
+        <legend>Hours to cover <span class="field__opt">(optional)</span></legend>
+        <div class="choice__items">
+          {COVERAGE.map((c) => (
+            <label class="choice__item">
+              <input type="radio" name="coverage" value={c.value} data-ring-input data-label={c.label} data-hours={c.hours} />
+              <span>{c.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="p-start">From when? <span class="field__opt">(optional)</span></label>
+        <input class="input" id="p-start" name="start_on" type="date" min={today} data-not-past aria-describedby="p-start-err" />
+        <p class="field__error" id="p-start-err"></p>
+      </div>
+      <div class="field">
+        <label for="p-message">Anything else the office should know <span class="field__opt">(optional)</span></label>
+        <textarea class="textarea" id="p-message" name="message" rows="4" maxlength="2000"></textarea>
+      </div>
+    </fieldset>
+
+    <div class="field consent-field" data-required="Tick the box so Bannuar may use these details.">
+      <label class="consent">
+        <input type="checkbox" name="privacy_consent" aria-describedby="p-consent-err" />
+        <span>Bannuar may use these details to prepare a proposal and to contact me about it. <a href="/privacy/">Privacy notice</a></span>
+      </label>
+      <p class="field__error" id="p-consent-err"></p>
+    </div>
+    <div class="form__honey" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <div class="form__foot">
+      <button class="btn" type="submit">Send the request</button>
+      <p class="form__status" data-status role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <div class="done" id="proposal-done" tabindex="-1" hidden>
+    <span class="beacon" aria-hidden="true"></span>
+    <h2>Request received</h2>
+    <p>Bannuar's office has your request, sent <span class="done__ref" data-sent-at></span>. Expect a call on the number you gave.</p>
+    <div><button class="btn btn--line" type="button" data-send-another>Send another request</button></div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/forms.js';
+</script>

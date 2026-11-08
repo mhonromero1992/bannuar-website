@@ -1,0 +1,65 @@
+/* Tokens. Every value has its reason in DESIGN.md. */
+:root {
+  /* colour: the badge at night (DESIGN.md section 2) */
+  --night: #0b1626;
+  --night-2: #13253d;
+  --night-3: #1b3150;
+  --paper: #f4f0e6;
+  --paper-2: #e9e3d5;
+  --paper-3: #ddd5c3;
+  --ink: #0d1a2b;
+  --muted: #4a5667;
+  --sun: #f2c230;
+  --sun-ink: #7a5900;
+  --sun-glow: rgba(242, 194, 48, 0.55);
+  --red: #c4161c;
+  --red-hi: #d9262c;
+  --red-press: #a51117;
+  --pale: #aebccf;
+  --on-night: #eef2f7;
+  --line: rgba(13, 26, 43, 0.14);
+  --line-night: rgba(238, 242, 247, 0.16);
+  /* artwork only */
+  --dawn: #f2a65a;
+  --laurel: #2e6b3a;
+
+  /* type: one family, two widths (DESIGN.md section 3) */
+  --font: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-hero: clamp(2.5rem, 1.3rem + 4.3vw, 4.9rem);
+  --fs-h2: clamp(2rem, 1.2rem + 3.1vw, 3.9rem);
+  --fs-h3: clamp(1.25rem, 1.08rem + 0.7vw, 1.6rem);
+  --fs-lede: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
+  --fs-body: clamp(1.02rem, 0.98rem + 0.18vw, 1.12rem);
+  --fs-small: 0.92rem;
+  --fs-label: 0.8rem;
+
+  /* space and shape */
+  --gutter: 16px;
+  --wrap: 1240px;
+  --section-pad: clamp(72px, 9vw, 140px);
+  --r-btn: 6px;
+  --r-field: 6px;
+  --r-panel: 14px;
+
+  /* depth, only where something is lifted (R-12) */
+  --shadow-lift: 0 1px 2px rgba(11, 22, 38, 0.06), 0 18px 40px -18px rgba(11, 22, 38, 0.35);
+  --shadow-float: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-quick: 180ms;
+  --t-state: 320ms;
+  --t-enter: 900ms;
+
+  /* focus: two-step halo, never removed (R-32) */
+  --focus-gap: var(--paper);
+  --focus-ring: var(--red);
+}
+
+@media (min-width: 760px) {
+  :root { --gutter: 28px; }
+}
+@media (min-width: 1080px) {
+  :root { --gutter: 48px; }
+}

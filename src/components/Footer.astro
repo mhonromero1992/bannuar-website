@@ -1,0 +1,43 @@
+---
+import { OFFICE, PORTAL_URL, SITE } from '../data/site.js';
+import credits from '../data/place-credits.json';
+---
+<footer class="footer on-night">
+  <div class="footer__glow" aria-hidden="true"></div>
+  <div class="wrap footer__inner">
+    <p class="footer__statement">A post needs a guard <em>tonight?</em></p>
+    <div class="footer__actions">
+      <a class="btn" href="/proposal/">Request a security proposal</a>
+      <a class="btn btn--line" href="/careers/#apply">Apply as a guard</a>
+    </div>
+    <nav class="footer__nav" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/about/">About Bannuar</a>
+      <a href="/careers/">Careers</a>
+      <a href="/proposal/">Request a proposal</a>
+      <a href="/verify/">Check a certificate</a>
+      <a href="/privacy/">Privacy notice</a>
+      {PORTAL_URL && <a href={PORTAL_URL}>Staff sign-in</a>}
+    </nav>
+  </div>
+  <div class="footer__horizon" aria-hidden="true"><span class="footer__sun"></span></div>
+  <div class="footer__ground">
+    <div class="wrap footer__base">
+      <div>
+        <address>{SITE.name} · {OFFICE.floor}, {OFFICE.building}, {OFFICE.street}, {OFFICE.barangay}, {OFFICE.town}, {OFFICE.province}</address>
+        {credits.length > 0 && (
+          <p class="footer__credits">
+            Photographs:{' '}
+            {credits.map((c, i) => (
+              <>
+                {i > 0 && '; '}
+                <a href={c.page}>{c.title}</a> by {c.artist}, <a href={c.licenseUrl}>{c.license}</a>
+              </>
+            ))}
+          </p>
+        )}
+      </div>
+      <p>© <span data-year>2026</span> {SITE.name}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import badge from '../assets/brand/bannuar-badge.png';
+import { OFFICE } from '../data/site.js';
+
+interface Props { page?: string }
+const { page } = Astro.props;
+const links = [
+  { href: '/about/', label: 'About', page: 'about' },
+  { href: '/careers/', label: 'Careers', page: 'careers' },
+  { href: '/verify/', label: 'Check a certificate', page: 'verify' },
+];
+---
+<header class="nav on-night">
+  <div class="wrap nav__bar">
+    <a class="brand" href="/" aria-label="Bannuar Security Agency, Inc., home">
+      <Image class="brand__badge" src={badge} alt="" width={40} height={40} densities={[1, 2]} loading="eager" />
+      <span class="brand__text">
+        <span class="brand__name">Bannuar</span>
+        <span class="brand__sub">Security Agency, Inc.</span>
+      </span>
+    </a>
+    <nav class="nav__links" aria-label="Main">
+      {links.map((l) => <a href={l.href} aria-current={page === l.page ? 'page' : undefined}>{l.label}</a>)}
+    </nav>
+    <a class="btn btn--small nav__cta" href="/proposal/">Request a proposal</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu-sheet" data-menu-open>
+      <span class="nav__menu-icon" aria-hidden="true"></span>Menu
+    </button>
+  </div>
+</header>
+
+<dialog class="sheet on-night" id="menu-sheet" aria-label="Menu">
+  <div class="wrap sheet__inner">
+    <div class="sheet__top">
+      <a class="brand" href="/" aria-label="Bannuar Security Agency, Inc., home">
+        <Image class="brand__badge" src={badge} alt="" width={40} height={40} densities={[1, 2]} />
+        <span class="brand__text">
+          <span class="brand__name">Bannuar</span>
+          <span class="brand__sub">Security Agency, Inc.</span>
+        </span>
+      </a>
+      <button class="sheet__close" type="button" data-menu-close>Close</button>
+    </div>
+    <nav class="sheet__links" aria-label="Menu">
+      <a href="/" aria-current={page === 'home' ? 'page' : undefined}>Home</a>
+      {links.map((l) => <a href={l.href} aria-current={page === l.page ? 'page' : undefined}>{l.label}</a>)}
+      <a href="/proposal/" aria-current={page === 'proposal' ? 'page' : undefined}>Request a proposal</a>
+    </nav>
+    <div class="sheet__actions">
+      <a class="btn btn--block" href="/proposal/">Request a security proposal</a>
+      <a class="btn btn--line btn--block" href="/careers/#apply">Apply as a guard</a>
+      <address class="sheet__office">{OFFICE.street}, {OFFICE.barangay}, {OFFICE.town}, {OFFICE.province}</address>
+    </div>
+  </div>
+</dialog>
