@@ -28,6 +28,30 @@ function check(name, ok, detail = '') {
 
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 
+/** The built pages carry Bannuar's real Supabase project; tests swap it for the mock or for none. */
+const SB_ATTRS = /data-sb-url(?:="[^"]*")? data-sb-key(?:="[^"]*")?/;
+const MOCK_KEY = 'sb_publishable_mock';
+const realHits = [];
+
+/**
+ * Every context starts disconnected: the pages' Supabase address is blanked, and any request to a
+ * real Supabase host is cut and recorded, so a test can never write into the live database.
+ */
+async function guarded(options) {
+  const context = await browser.newContext(options);
+  await context.route(/^https:\/\/[a-z0-9-]+\.supabase\.co\//, (route) => {
+    realHits.push(route.request().url());
+    return route.abort('blockedbyclient');
+  });
+  await context.route(`${BASE}/**`, async (route) => {
+    if (route.request().resourceType() !== 'document') return route.continue();
+    const res = await route.fetch();
+    const body = (await res.text()).replace(SB_ATTRS, 'data-sb-url="" data-sb-key=""');
+    return route.fulfill({ response: res, body });
+  });
+  return context;
+}
+
 /** A page whose HTML carries the mock Supabase address, with API calls answered by `handlers`. */
 async function connectedPage(context, handlers = {}) {
   const page = await context.newPage();
@@ -35,7 +59,7 @@ async function connectedPage(context, handlers = {}) {
   await page.route(`${BASE}/**`, async (route) => {
     if (route.request().resourceType() !== 'document') return route.continue();
     const res = await route.fetch();
-    const body = (await res.text()).replace('data-sb-url data-sb-key', `data-sb-url="${MOCK}" data-sb-key="eyJmock.anon.key"`);
+    const body = (await res.text()).replace(SB_ATTRS, `data-sb-url="${MOCK}" data-sb-key="${MOCK_KEY}"`);
     return route.fulfill({ response: res, body });
   });
   await page.route(`${MOCK}/**`, async (route) => {
@@ -55,7 +79,7 @@ const json = (status, data) => (route) => route.fulfill({ status, contentType: '
 // ------------------------------------------------------------------ 1. every page at every width
 const linkStatus = new Map();
 for (const width of WIDTHS) {
-  const context = await browser.newContext({ viewport: { width, height: width < 700 ? 844 : 900 } });
+  const context = await guarded({ viewport: { width, height: width < 700 ? 844 : 900 } });
   for (const path of PAGES) {
     const page = await context.newPage();
     const errors = [];
@@ -147,8 +171,8 @@ check('every internal link answers 200', deadLinks.length === 0, deadLinks.map((
 
 // ------------------------------------------------------------------ 2. interactions
 console.log('\nInteractions');
-const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+const desktop = await guarded({ viewport: { width: 1440, height: 900 } });
+const phone = await guarded({ viewport: { width: 390, height: 844 }, hasTouch: true });
 
 {
   // skip link, keyboard first stop
@@ -276,7 +300,7 @@ const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, 
   const row = sent ? JSON.parse(sent.body) : {};
   check('proposal: one insert into inquiries', Boolean(sent));
   check('proposal: the row carries the answers', row.company === 'Acme Mart' && row.guards_needed === 4 && row.coverage === 'night' && row.site_type === 'commercial' && row.privacy_consent === true, JSON.stringify(row));
-  check('proposal: sends the key and asks for no data back', sent?.headers.apikey === 'eyJmock.anon.key' && /return=minimal/.test(sent?.headers.prefer || ''));
+  check('proposal: sends the publishable key as apikey only, asks for no data back', sent?.headers.apikey === MOCK_KEY && !sent?.headers.authorization && /return=minimal/.test(sent?.headers.prefer || ''));
   check('proposal: success shown after the database answers', await page.locator('#proposal-done').isVisible());
   await page.close();
 }
@@ -386,7 +410,7 @@ const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, 
 
 {
   // reduced motion: everything visible, nothing moving, no WebGL
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+  const ctx = await guarded({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
   const page = await ctx.newPage();
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
@@ -404,6 +428,8 @@ const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, 
   check('reduced motion: moments stay still and readable', !rm.highlightArmed && !rm.dropsArmed);
   await ctx.close();
 }
+
+check('no request reached a real Supabase project', realHits.length === 0, realHits.slice(0, 3).join(', '));
 
 await desktop.close();
 await phone.close();

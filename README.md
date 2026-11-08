@@ -20,26 +20,32 @@ Deploy `dist/` to any static host (Vercel, Netlify, Cloudflare Pages). Pages are
 (`careers/index.html`), which every host serves at `/careers`. When the domain is known, set it in
 `astro.config.mjs` (`site`) and `src/data/site.js` (`SITE.url`) so canonical and share links follow.
 
-## Connect it to Bannuar's database
+## The database connection
 
-1. Create the Supabase project and run `supabase/schema.sql` from the portal repository
-   (its `supabase/SETUP.md` has the steps).
-2. Copy `.env.example` to `.env` (or set the same variables in Vercel → Project → Settings →
-   Environment Variables) and rebuild:
+The website is connected to Bannuar's Supabase project, the same one the HR portal uses:
+`https://bcynizcgdgqznlxuzwjx.supabase.co` with its publishable key, both set in
+`src/data/site.js`. They are public by design: they reach every visitor's browser, and row level
+security in the database decides what the website may do with them: add a job application (and
+upload its file into `applications/incoming/`), add a proposal request, read open job openings, and
+check a certificate code. It cannot read any application, request, employee or certificate. Never
+put the secret (service role) key anywhere in this project.
+
+To point a build at another project (a staging copy, for example), set these in `.env` or in
+Vercel → Project → Settings → Environment Variables and rebuild:
 
 | Variable | Value |
 |---|---|
-| `PUBLIC_SUPABASE_URL` | Project Settings → API → Project URL |
-| `PUBLIC_SUPABASE_ANON_KEY` | the `anon` public key (or the publishable key). Never the service role key. |
+| `PUBLIC_SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`) | Project Settings → API → Project URL |
+| `PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) | the publishable key (a legacy `anon` key works too) |
 | `PUBLIC_PORTAL_URL` | optional: the HR portal's address, shown as "Staff sign-in" in the footer |
 
-What the website may do with that key is decided by row level security in the database: add a job
-application (and upload its file into `applications/incoming/`), add a proposal request, read open
-job openings, and check a certificate code. It cannot read any application, request, employee or
-certificate.
+If a build ends up without a project, the forms say plainly that online sending is not connected
+and point to the office; nothing pretends to send.
 
-Until the variables are set, the forms say plainly that online sending is not connected and point
-to the office; nothing pretends to send.
+**Checked against the live project on 8 November 2026** (read-only): the schema is installed; open
+posts load on the careers page; the certificate check answers; the employees table refuses public
+reads; a proposal request without consent and an application with a bad mobile number are refused
+by the database with the messages the forms show. No test record was written.
 
 ## Pages
 
@@ -106,7 +112,9 @@ checked field by field, the resume uploaded first); the open posts and "Apply fo
 the certificate check for a genuine, withdrawn, unknown and malformed code and for no connection;
 and reduced motion. The Supabase API is mocked inside the test.
 
-Last run (8 November 2026, production build): **461 passed, 0 failed.**
+Last run (8 November 2026, production build): **462 passed, 0 failed.** Every page starts
+disconnected in the suite and any request to a real Supabase host is cut, so the tests never write
+into the live database.
 
 ## Delivery gate (anti-slop, DURING mode)
 
@@ -128,7 +136,7 @@ Last run (8 November 2026, production build): **461 passed, 0 failed.**
 - R-28: no FAQ (no real questions to answer yet).
 - R-32 keyboard: skip link first; menu dialog traps focus, closes on Escape, returns focus; every
   control reachable; a two-step focus halo everywhere.
-- R-35 verified by running: the build, the 461-check browser suite, and screenshots reviewed at
+- R-35 verified by running: the build, the 462-check browser suite, and screenshots reviewed at
   1440 and 390 for every page.
 - R-39 semantics: landmarks, `lang`, unique titles, a visible label on every field,
   `cursor: pointer`, reduced motion stops everything and keeps content visible, the moving hero has
@@ -150,8 +158,9 @@ the action ("Request a security proposal", "Apply as a guard", "Check the certif
 theme with its reason (DESIGN.md section 2).
 
 **Not verified here:** real phones, Safari and Firefox; real GPUs (the scene was checked in
-Chromium's software renderer); Lighthouse; a live Supabase project (the API was mocked; the
-database itself is tested in the portal repository); `npm run fetch:photos`.
+Chromium's software renderer); Lighthouse; sending a form to the live project (the test suite
+mocks the API and blocks every real Supabase host, and the live check above is read-only);
+`npm run fetch:photos`.
 
 ## How the design skills were used
 

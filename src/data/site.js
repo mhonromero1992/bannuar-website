@@ -121,10 +121,28 @@ export const EDUCATION = [
 
 export const ALL_SOURCES = Object.values(SOURCES);
 
-/** Supabase project (public values; row level security protects the data). Empty until set up. */
+/**
+ * Bannuar's Supabase project, the same one the HR portal uses. Both values are public by design:
+ * they reach every visitor's browser, and row level security in the database decides what the
+ * website may do (add applications and proposal requests, read open posts, check a certificate).
+ * An environment variable overrides them: PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+ * or the NEXT_PUBLIC_ names. Never put the secret (service role) key anywhere in this project.
+ */
+const DEFAULT_SUPABASE_URL = 'https://bcynizcgdgqznlxuzwjx.supabase.co';
+const DEFAULT_SUPABASE_KEY = 'sb_publishable_rwAYUkMVmJxXiT9SnrqlxA_VsMFHK25';
+const fromProcess = (name) => (typeof process !== 'undefined' && process.env ? process.env[name] : undefined);
+const E = import.meta.env;
+
 export const SUPABASE = {
-  url: (import.meta.env.PUBLIC_SUPABASE_URL ?? '').replace(/\/$/, ''),
-  key: import.meta.env.PUBLIC_SUPABASE_ANON_KEY ?? '',
+  url: (E.PUBLIC_SUPABASE_URL || E.NEXT_PUBLIC_SUPABASE_URL || fromProcess('NEXT_PUBLIC_SUPABASE_URL') || DEFAULT_SUPABASE_URL).replace(/\/$/, ''),
+  key:
+    E.PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    E.PUBLIC_SUPABASE_ANON_KEY ||
+    E.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    E.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    fromProcess('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY') ||
+    fromProcess('NEXT_PUBLIC_SUPABASE_ANON_KEY') ||
+    DEFAULT_SUPABASE_KEY,
 };
 
 /** The HR portal, linked as "Staff sign-in" in the footer once it has an address. */
